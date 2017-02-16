@@ -10,6 +10,7 @@ public class physicsMovementScript : MonoBehaviour {
 
 	public float maxSpeed = 6f;
 
+	float drag = .1f;
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +27,7 @@ public class physicsMovementScript : MonoBehaviour {
 		inputVector = new Vector3 (horizontal, 0f, vertical);
 
 		//steering controls based on input vector
-		transform.Rotate(0f, inputVector.x * Time.deltaTime * 180f, 0f);
+		//transform.Rotate(0f, inputVector.x * Time.deltaTime * 180f, 0f);
 		
 	}
 
@@ -34,9 +35,11 @@ public class physicsMovementScript : MonoBehaviour {
 		
 		//apply acceleration if under maxspeed with vertical input axis
 		if (rb.velocity.magnitude < maxSpeed) {
-			rb.AddRelativeForce (0f, 0f, inputVector.z * Time.deltaTime);
-
+			rb.AddRelativeForce (transform.forward * inputVector.z * Time.deltaTime * 180f);
 		}
+		//trying torque
+		rb.AddTorque(0f, inputVector.x * Time.deltaTime, 0f);
+		rb.drag = drag;
 
 	}
 }
