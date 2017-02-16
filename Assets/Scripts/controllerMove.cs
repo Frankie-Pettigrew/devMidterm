@@ -1,9 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class controllerMove : MonoBehaviour {
+	public Text spedometer;
 	CharacterController playerCon;
+	bool accelerating;
+	bool gliding;
+	bool braking;
+	bool reversing;
+
+	public float maxSpeed;
+	float currentSpeed = 0;
+	public float acceleration;
+	public float drag = .8f;
+	public float brakeForce;
+
 	// Use this for initialization
 	void Start () {
 		playerCon = GetComponent<CharacterController> (); // save reference to our component
@@ -14,20 +27,64 @@ public class controllerMove : MonoBehaviour {
 		//1. grab input from input devices
 		float horizontal = Input.GetAxis ("Horizontal"); //left and right movement
 		float vertical = Input.GetAxis ("Vertical"); // up and down movement
-		float jump = Input.GetAxis("Jump");
+
+		//turn input into bools
+		if (vertical > 0) {
+			accelerating = true;
+			gliding = false;
+			braking = false;
+			reversing = false;
+		} else if (vertical <= .01 && vertical >= -.01f) {
+			gliding = true;
+			accelerating = false;
+			braking = false;
+			reversing = false;
+		} else if (vertical < -.01f) {
+			braking = true;
+			accelerating = false;
+			gliding = false;
+		}
+
+		//calculate acceleration
+		if (accelerating) {
+			currentSpeed = .5f;
+			if (currentSpeed < maxSpeed) {
+				currentSpeed *= acceleration;
+			} else if(currentSpeed == maxSpeed) {
+				currentSpeed = maxSpeed;
+				}
+		}
+		//decelerate when gliding
+		if (gliding) {
+			Debug.Log("gliding");
+			if (currentSpeed >= .03f || currentSpeed < 0) {
+				currentSpeed *= drag;
+			}
+		}
+
+		//brake 
+		if (braking) {
+			//Debug.Log ("braking");
+			if (currentSpeed >= .03f) {
+				currentSpeed *= brakeForce;
+			} else {
+				reversing = true;
+			}
+		}
+
+		if (reversing) {
+			currentSpeed = -.1f;
+		}
+
+
 
 		//2. plug your values into the character controller
-		playerCon.Move(transform.forward * Time.deltaTime * vertical * 5f); // move along forward facing 
+		playerCon.Move(transform.forward * Time.deltaTime * currentSpeed * 50f); // move along forward facing 
 		transform.Rotate( 0f, horizontal * Time.deltaTime * 90f, 0f);
 
-		//3. let's add gravity
-		playerCon.Move(Physics.gravity * 0.05f);
+		spedometer.text = currentSpeed.ToString() + "input axis" + vertical.ToString();
+		//Debug.Log (vertical);
 
-		//4. let us press SPACE to jump
-		if (Input.GetKeyDown(KeyCode.Space) && playerCon.isGrounded == true) {
-			playerCon.Move( new Vector3(0f, 3f, 0f));
-
-		}
 
 	}
 }
