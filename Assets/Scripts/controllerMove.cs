@@ -38,7 +38,6 @@ public class controllerMove : MonoBehaviour {
 			gliding = true;
 			accelerating = false;
 			braking = false;
-			reversing = false;
 		} else if (vertical < -.01f) {
 			braking = true;
 			accelerating = false;
@@ -56,7 +55,7 @@ public class controllerMove : MonoBehaviour {
 		}
 		//decelerate when gliding
 		if (gliding) {
-			Debug.Log("gliding");
+			// Debug.Log("gliding");
 			if (currentSpeed >= .03f || currentSpeed < 0) {
 				currentSpeed *= drag;
 			}
