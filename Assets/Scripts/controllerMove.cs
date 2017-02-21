@@ -59,27 +59,34 @@ public class controllerMove : MonoBehaviour {
 			if (currentSpeed >= .03f || currentSpeed < 0) {
 				currentSpeed *= drag;
 			}
+			if (currentSpeed <= .03f) {
+				currentSpeed = 0;
+			}
 		}
 
 		//brake 
 		if (braking) {
 			//Debug.Log ("braking");
-			if (currentSpeed >= .03f) {
+			if (currentSpeed >= .001f) {
 				currentSpeed *= brakeForce;
 			} else {
 				reversing = true;
 			}
 		}
 
-		if (reversing) {
-			currentSpeed = -.1f;
-		}
+	/*	if (reversing) {
+			while (vertical < 0) {
+				currentSpeed = -1f;
+			}
+		} */
 
 
 
 		//2. plug your values into the character controller
-		playerCon.Move(transform.forward * Time.deltaTime * currentSpeed * 50f); // move along forward facing 
-		transform.Rotate( 0f, horizontal * Time.deltaTime * 90f, 0f);
+		playerCon.Move(transform.forward * Time.deltaTime * currentSpeed); // move along forward facing
+		if (currentSpeed > 0) {
+			transform.Rotate (0f, horizontal * Time.deltaTime * 90f, 0f);
+		}
 
 		spedometer.text = currentSpeed.ToString() + "input axis" + vertical.ToString();
 		//Debug.Log (vertical);
