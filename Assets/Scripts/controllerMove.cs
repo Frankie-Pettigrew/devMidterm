@@ -69,9 +69,9 @@ public class controllerMove : MonoBehaviour {
 			//Debug.Log ("braking");
 			if (currentSpeed >= .001f) {
 				currentSpeed *= brakeForce;
-			} else {
+			} /*else {
 				reversing = true;
-			}
+			}*/
 		}
 
 	/*	if (reversing) {
