@@ -34,7 +34,7 @@ public class roadGenerate : MonoBehaviour {
 				turnRight = false;
 				fixRotation(nextRoad);
 				nextRoad.transform.parent = lastRoad.transform;
-				nextRoad.transform.localPosition = new Vector3 (-.0125f, 0, -1.235f);
+				nextRoad.transform.localPosition = new Vector3 (0, 0, -1.235f);
 
 			} //Left
 			else if (genNum == 2) {
