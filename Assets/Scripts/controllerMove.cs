@@ -20,6 +20,7 @@ public class controllerMove : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		playerCon = GetComponent<CharacterController> (); // save reference to our component
+		transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
 	}
 	
 	// Update is called once per frame
@@ -46,7 +47,9 @@ public class controllerMove : MonoBehaviour {
 
 		//calculate acceleration
 		if (accelerating) {
-			currentSpeed = .5f;
+			if (currentSpeed == 0) {
+				currentSpeed = .5f;
+			}
 			if (currentSpeed < maxSpeed) {
 				currentSpeed *= acceleration;
 			} else if(currentSpeed == maxSpeed) {
@@ -83,9 +86,13 @@ public class controllerMove : MonoBehaviour {
 
 
 		//2. plug your values into the character controller
-		playerCon.Move(transform.forward * Time.deltaTime * currentSpeed); // move along forward facing
+		Vector3 movement = transform.forward * Time.deltaTime * currentSpeed;
+		movement.y = 0;
+
+		playerCon.Move(movement); // move along forward facing
 		if (currentSpeed > 0) {
 			transform.Rotate (0f, horizontal * Time.deltaTime * 90f, 0f);
+			transform.eulerAngles =  new Vector3 (0, transform.eulerAngles.y, Input.GetAxis ("Horizontal") * -5);
 		}
 
 		spedometer.text = currentSpeed.ToString() + "input axis" + vertical.ToString();

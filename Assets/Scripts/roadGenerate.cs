@@ -6,6 +6,8 @@ public class roadGenerate : MonoBehaviour {
 	public GameObject roadPrefab;
 	public GameObject roadContainer;
 	public GameObject lastRoad;
+	public GameObject goalPrefab;
+	public GameObject destPrefab;
 	public int roadLength;
 	bool turnRight;
 	bool turnLeft;
@@ -13,7 +15,7 @@ public class roadGenerate : MonoBehaviour {
 	bool isRight;
 	bool isLeft;
 	bool isStraight = true;
-	Vector3 lastRotation = new Vector3 (0, 0, 0);
+	//Vector3 lastRotation = new Vector3 (0, 0, 0);
 
 
 	// Use this for initialization
@@ -27,6 +29,8 @@ public class roadGenerate : MonoBehaviour {
 			int genNum = Random.Range (0, 3);
 			//BoxCollider[] colliders = lastRoad.GetComponents<BoxCollider>()
 			GameObject nextRoad = Instantiate(roadPrefab);
+			goalGenerate (goalPrefab, i, nextRoad, 3);
+			goalGenerate (destPrefab, i, nextRoad, 5);
 			//Straight
 			if (genNum == 1) {
 				goStraight = true;
@@ -56,17 +60,12 @@ public class roadGenerate : MonoBehaviour {
 				nextRoad.transform.parent = lastRoad.transform;
 				nextRoad.transform.localPosition = new Vector3 (-3.875433f, 0, -.6126667f);
 			}
-			lastRotation = nextRoad.transform.localEulerAngles;
+			//lastRotation = nextRoad.transform.localEulerAngles;
 			lastRoad = nextRoad;
 			Debug.Log(i + ". " + isStraight + isRight + isLeft);
 		}
 	}
 		
-	// Update is called once per frame
-	void Update () {
-		//Vector3 instPosition = roadPrefab.GetComponentInChildren<Transform> ();
-
-	}
 
 	void fixRotation(GameObject nextRoad) {
 		if (turnRight) {
@@ -112,13 +111,15 @@ public class roadGenerate : MonoBehaviour {
 		}
 
 	}
-	void fixPosition() {
-		if (turnRight) {
 
-		} else if (turnLeft) {
-
-		} else if (goStraight) {
-
+	void goalGenerate(GameObject goal, int i, GameObject road, int dest) {
+		if (i == Mathf.RoundToInt (dest)) {
+			GameObject fab = Instantiate (goal);
+			fab.transform.parent = road.transform;
+			fab.transform.localPosition = new Vector3 (0f, .8f, 0f);
+			Debug.Log (goal.name + " generated");
 		}
+
+
 	}
 }
