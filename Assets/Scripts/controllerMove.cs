@@ -10,12 +10,34 @@ public class controllerMove : MonoBehaviour {
 	bool gliding;
 	bool braking;
 	bool reversing;
+	float lerpT;
+	float lerpMax;
+	float lerpMin;
 
 	public float maxSpeed;
 	float currentSpeed = 0;
 	public float acceleration;
 	public float drag = .8f;
 	public float brakeForce;
+
+
+	public void rotateZ(float axis) {
+		float yVal = transform.eulerAngles.y;
+		float maxRot = 15;
+		float rate = 2.0f;
+		//axis = Mathf.Lerp (-1, 1, 0.5f);
+		float angle = 0;
+
+		if (axis > 0) {
+			angle = Mathf.LerpAngle (0, 25, 0 + Time.deltaTime); 
+		} else if (axis < 0) {
+			angle = Mathf.LerpAngle (0, -25, 0 + Time.deltaTime);
+		} else if (axis == 0) {
+			angle = 0;
+		}
+		yVal += -axis;
+		transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, angle);
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +48,7 @@ public class controllerMove : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//1. grab input from input devices
-		float horizontal = Input.GetAxis ("Horizontal"); //left and right movement
+		float horizontal = Input.GetAxis("Horizontal"); //left and right movement
 		float vertical = Input.GetAxis ("Vertical"); // up and down movement
 
 		//turn input into bools
@@ -88,11 +110,16 @@ public class controllerMove : MonoBehaviour {
 		//2. plug your values into the character controller
 		Vector3 movement = transform.forward * Time.deltaTime * currentSpeed;
 		movement.y = 0;
+		//lerpT += horizontal * 5;
+
+		
 
 		playerCon.Move(movement); // move along forward facing
 		if (currentSpeed > 0) {
-			transform.Rotate (0f, horizontal * Time.deltaTime * 90f, 0f);
-			transform.eulerAngles =  new Vector3 (0, transform.eulerAngles.y, Input.GetAxis ("Horizontal") * -5);
+			//rotateZ (-horizontal);
+			transform.eulerAngles  += new Vector3(transform.eulerAngles.x, horizontal * Time.deltaTime * 90f, transform.eulerAngles.z);
+			//transform.eulerAngles =  new Vector3 (0, transform.eulerAngles.y, Mathf.Lerp(lerpMin, lerpMax, lerpT));
+
 		}
 
 		spedometer.text = currentSpeed.ToString() + "input axis" + vertical.ToString();
@@ -100,4 +127,5 @@ public class controllerMove : MonoBehaviour {
 
 
 	}
+
 }
