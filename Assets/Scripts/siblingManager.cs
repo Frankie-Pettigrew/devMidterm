@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class siblingManager : MonoBehaviour {
-	public int siblings;
+	public static int siblings;
 	void Start() {
 		siblings = 0;
 	}	

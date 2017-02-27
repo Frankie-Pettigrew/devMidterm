@@ -14,6 +14,7 @@ public class controllerMove : MonoBehaviour {
 	float lerpMax;
 	float lerpMin;
 
+
 	public float maxSpeed;
 	float currentSpeed = 0;
 	public float acceleration;
@@ -53,6 +54,10 @@ public class controllerMove : MonoBehaviour {
 		//1. grab input from input devices
 		float horizontal = Input.GetAxis("Horizontal"); //left and right movement
 		float vertical = Input.GetAxis ("Vertical"); // up and down movement
+
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			gameObject.GetComponent<AudioSource> ().Play ();
+		}
 
 		//turn input into bools
 		if (vertical > 0) {
