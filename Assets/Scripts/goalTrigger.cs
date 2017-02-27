@@ -4,13 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 public class goalTrigger : MonoBehaviour {
 	
-	public int siblings = 0;
+	GameObject playerCar;
+	int sibs;
+	void Start() {
+		sibs = 0;
+		playerCar = GameObject.FindGameObjectWithTag ("Player");
+	}
 
 	void OnTriggerEnter(Collider other) {
-		
-			siblings++;
+		playerCar.GetComponent<siblingManager> ().siblings = sibs;
+		sibs++;
 			Destroy (gameObject);
-			Debug.Log ("siblings: " + siblings);
+			Debug.Log ("siblings: " + sibs);
 		
 	}
 }

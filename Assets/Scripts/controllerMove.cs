@@ -24,19 +24,22 @@ public class controllerMove : MonoBehaviour {
 	public void rotateZ(float axis) {
 		float yVal = transform.eulerAngles.y;
 		float maxRot = 15;
-		float rate = 2.0f;
-		//axis = Mathf.Lerp (-1, 1, 0.5f);
+		float rate = 0f;
 		float angle = 0;
-
-		if (axis > 0) {
-			angle = Mathf.LerpAngle (0, 25, 0 + Time.deltaTime); 
-		} else if (axis < 0) {
-			angle = Mathf.LerpAngle (0, -25, 0 + Time.deltaTime);
-		} else if (axis == 0) {
-			angle = 0;
-		}
+		bool right = false;
+		bool left = false;
+		//axis = Mathf.Lerp (-1, 1, 0.5f);
 		yVal += -axis;
-		transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, angle);
+		if (Input.GetKey(KeyCode.D)) {
+			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, Mathf.LerpAngle (transform.eulerAngles.z, -15, 2f * Time.deltaTime));
+		} else if (Input.GetKey(KeyCode.A)) {
+			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, Mathf.LerpAngle (transform.eulerAngles.z, 15, 2f * Time.deltaTime));
+		} else {
+			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, transform.eulerAngles.y, Mathf.LerpAngle (transform.eulerAngles.z, 0, 3f * Time.deltaTime));
+
+		}
+		//float angle = Mathf.LerpAngle(-15, 15, 0.2f * rate);
+		//transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, angle);
 	}
 
 	// Use this for initialization
@@ -116,8 +119,8 @@ public class controllerMove : MonoBehaviour {
 
 		playerCon.Move(movement); // move along forward facing
 		if (currentSpeed > 0) {
-			//rotateZ (-horizontal);
-			transform.eulerAngles  += new Vector3(transform.eulerAngles.x, horizontal * Time.deltaTime * 90f, transform.eulerAngles.z);
+			rotateZ (-horizontal);
+			//transform.eulerAngles  += new Vector3(transform.eulerAngles.x, horizontal * Time.deltaTime * 90f, transform.eulerAngles.z);
 			//transform.eulerAngles =  new Vector3 (0, transform.eulerAngles.y, Mathf.Lerp(lerpMin, lerpMax, lerpT));
 
 		}
