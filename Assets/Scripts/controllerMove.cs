@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class controllerMove : MonoBehaviour {
-	public Text spedometer;
+	public GameObject spedometer;
+	public static Text text;
 	CharacterController playerCon;
 	bool accelerating;
 	bool gliding;
@@ -47,6 +48,8 @@ public class controllerMove : MonoBehaviour {
 	void Start () {
 		playerCon = GetComponent<CharacterController> (); // save reference to our component
 		transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+		spedometer = GameObject.FindGameObjectWithTag ("text");
+		text = spedometer.GetComponent<Text> ();
 	}
 	
 	// Update is called once per frame
@@ -130,7 +133,7 @@ public class controllerMove : MonoBehaviour {
 
 		}
 
-		spedometer.text = currentSpeed.ToString() + "input axis" + vertical.ToString();
+		//text.text = currentSpeed.ToString() + "input axis" + vertical.ToString();
 		//Debug.Log (vertical);
 
 

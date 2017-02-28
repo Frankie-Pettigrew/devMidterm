@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class goalTrigger : MonoBehaviour {
 
 
-	void OnTriggerEnter(Collider other) {
+	void OnTriggerStay(Collider other) {
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			siblingManager.siblings++;
 			Destroy (gameObject);
