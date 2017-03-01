@@ -4,44 +4,36 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class controllerMove : MonoBehaviour {
-	public GameObject spedometer;
+	public static GameObject spedometer;
 	public static Text text;
 	CharacterController playerCon;
 	bool accelerating;
 	bool gliding;
 	bool braking;
 	bool reversing;
-	float lerpT;
-	float lerpMax;
-	float lerpMin;
-
+	bool moving;
+	public float lerpT;
 
 	public float maxSpeed;
-	float currentSpeed = 0;
+	public float currentSpeed = 0;
 	public float acceleration;
+	public float accelerationChange;
 	public float drag = .8f;
 	public float brakeForce;
+	public float idleSpeed;
 
 
 	public void rotateZ(float axis) {
 		float yVal = transform.eulerAngles.y;
-		float maxRot = 15;
-		float rate = 0f;
-		float angle = 0;
-		bool right = false;
-		bool left = false;
-		//axis = Mathf.Lerp (-1, 1, 0.5f);
-		yVal += -axis;
-		if (Input.GetKey(KeyCode.D)) {
-			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, Mathf.LerpAngle (transform.eulerAngles.z, -15, 2f * Time.deltaTime));
-		} else if (Input.GetKey(KeyCode.A)) {
-			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, Mathf.LerpAngle (transform.eulerAngles.z, 15, 2f * Time.deltaTime));
-		} else {
-			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, transform.eulerAngles.y, Mathf.LerpAngle (transform.eulerAngles.z, 0, 3f * Time.deltaTime));
+		yVal += -axis * 1.8f;
 
+		if (Input.GetKey(KeyCode.D) && currentSpeed >= maxSpeed) {
+			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, Mathf.LerpAngle (transform.eulerAngles.z, -10, lerpT * Time.deltaTime));
+		} else if (Input.GetKey(KeyCode.A) && currentSpeed >= maxSpeed) {
+			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, Mathf.LerpAngle (transform.eulerAngles.z, 10, lerpT * Time.deltaTime));
+		} else {
+			transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, Mathf.LerpAngle (transform.eulerAngles.z, 0, 3f * Time.deltaTime));
 		}
-		//float angle = Mathf.LerpAngle(-15, 15, 0.2f * rate);
-		//transform.eulerAngles = new Vector3 (transform.eulerAngles.x, yVal, angle);
 	}
 
 	// Use this for initialization
@@ -80,12 +72,18 @@ public class controllerMove : MonoBehaviour {
 
 		//calculate acceleration
 		if (accelerating) {
+			moving = true;
 			if (currentSpeed == 0) {
-				currentSpeed = .5f;
+				currentSpeed = idleSpeed;
+			}
+			if (currentSpeed == idleSpeed) {
+				acceleration = 0.05f;
+				accelerationChange = 0.1f;
 			}
 			if (currentSpeed < maxSpeed) {
-				currentSpeed *= acceleration;
-			} else if(currentSpeed == maxSpeed) {
+				acceleration += accelerationChange;
+				currentSpeed += acceleration * drag;
+			} else if(currentSpeed >= maxSpeed) {
 				currentSpeed = maxSpeed;
 				}
 		}
@@ -93,10 +91,14 @@ public class controllerMove : MonoBehaviour {
 		if (gliding) {
 			// Debug.Log("gliding");
 			if (currentSpeed >= .03f || currentSpeed < 0) {
-				currentSpeed *= drag;
+				if (currentSpeed != idleSpeed) {
+					currentSpeed *= drag;
+					acceleration *= drag;
+				}
 			}
 			if (currentSpeed <= .03f) {
 				currentSpeed = 0;
+				moving = false;
 			}
 		}
 
@@ -105,16 +107,18 @@ public class controllerMove : MonoBehaviour {
 			//Debug.Log ("braking");
 			if (currentSpeed >= .001f) {
 				currentSpeed *= brakeForce;
-			} /*else {
+			} else if(moving == false){
 				reversing = true;
-			}*/
+			}
 		}
 
-	/*	if (reversing) {
-			while (vertical < 0) {
-				currentSpeed = -1f;
+		if (reversing) {
+			if (braking) {
+				currentSpeed = -0.6f;
+			} else {
+				currentSpeed *= drag;
 			}
-		} */
+		} 
 
 
 
@@ -125,15 +129,11 @@ public class controllerMove : MonoBehaviour {
 
 		
 
-		playerCon.Move(movement); // move along forward facing
-		if (currentSpeed > 0) {
+			playerCon.Move(movement); // move along forward facing
 			rotateZ (-horizontal);
-			//transform.eulerAngles  += new Vector3(transform.eulerAngles.x, horizontal * Time.deltaTime * 90f, transform.eulerAngles.z);
-			//transform.eulerAngles =  new Vector3 (0, transform.eulerAngles.y, Mathf.Lerp(lerpMin, lerpMax, lerpT));
+		
 
-		}
-
-		//text.text = currentSpeed.ToString() + "input axis" + vertical.ToString();
+		//text.text = (/*Time.deltaTime * */currentSpeed).ToString();
 		//Debug.Log (vertical);
 
 
