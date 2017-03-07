@@ -36,9 +36,11 @@ public class roadGenerate : MonoBehaviour {
 				goStraight = true;
 				turnLeft = false;
 				turnRight = false;
-				fixRotation(nextRoad);
+				fixRotation(nextRoad, lastRoad);
 				nextRoad.transform.parent = lastRoad.transform;
 				nextRoad.transform.localPosition = new Vector3 (0, 0, -1.235f);
+				nextRoad.transform.parent = null;
+
 
 			} //Left
 			else if (genNum == 2) {
@@ -46,9 +48,10 @@ public class roadGenerate : MonoBehaviour {
 				turnLeft = true;
 				turnRight = false;
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 270f, 0f);
-				fixRotation(nextRoad);
+				fixRotation(nextRoad, lastRoad);
 				nextRoad.transform.parent = lastRoad.transform;
 				nextRoad.transform.localPosition = new Vector3 (3.867048f, 0, -0.6110001f);
+				nextRoad.transform.parent = null;
 
 			} //Right
 			else {
@@ -56,9 +59,11 @@ public class roadGenerate : MonoBehaviour {
 				turnLeft = false;
 				turnRight = true;
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 90f, 0f);
-				fixRotation(nextRoad);
+				fixRotation(nextRoad, lastRoad);
 				nextRoad.transform.parent = lastRoad.transform;
 				nextRoad.transform.localPosition = new Vector3 (-3.875433f, 0, -.6126667f);
+				nextRoad.transform.parent = null;
+
 			}
 			//lastRotation = nextRoad.transform.localEulerAngles;
 			lastRoad = nextRoad;
@@ -67,8 +72,14 @@ public class roadGenerate : MonoBehaviour {
 	}
 		
 
-	void fixRotation(GameObject nextRoad) {
+	void fixRotation(GameObject nextRoad, GameObject lastRoad) {
+		//BoxCollider[] boxColliders;
+		//boxColliders = lastRoad.GetComponentsInChildren<BoxCollider> ();
+
 		if (turnRight) {
+			/*boxColliders [2].isTrigger = true;
+			boxColliders [1].isTrigger = false;
+			boxColliders [0].isTrigger = false; */
 			if (isLeft) {
 				nextRoad.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 				isStraight = true;
@@ -83,6 +94,9 @@ public class roadGenerate : MonoBehaviour {
 				isRight = true; 
 			}
 		} else if (turnLeft) {
+		/*	boxColliders [2].isTrigger = false;
+			boxColliders [1].isTrigger = true;
+			boxColliders [0].isTrigger = false;*/
 			if (isLeft) {
 				nextRoad.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
 				isStraight = true;
@@ -98,6 +112,9 @@ public class roadGenerate : MonoBehaviour {
 			}
 
 		} else if(goStraight) {
+			/*boxColliders [2].isTrigger = false;
+			boxColliders [1].isTrigger = false;
+			boxColliders [0].isTrigger = true;*/
 			if (isLeft) {
 				nextRoad.transform.localEulerAngles = new Vector3 (0f, -90f, 0f);
 				isLeft = true;

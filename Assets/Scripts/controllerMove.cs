@@ -21,6 +21,7 @@ public class controllerMove : MonoBehaviour {
 	public float drag = .8f;
 	public float brakeForce;
 	public float idleSpeed;
+	public float accelerationCap;
 
 
 	public void rotateZ(float axis) {
@@ -81,8 +82,10 @@ public class controllerMove : MonoBehaviour {
 				accelerationChange = 0.1f;
 			}
 			if (currentSpeed < maxSpeed) {
-				acceleration += accelerationChange;
-				currentSpeed += acceleration * drag;
+				if (acceleration < accelerationCap) {
+					acceleration += accelerationChange;
+				}
+				currentSpeed += acceleration;
 			} else if(currentSpeed >= maxSpeed) {
 				currentSpeed = maxSpeed;
 				}
@@ -96,7 +99,7 @@ public class controllerMove : MonoBehaviour {
 					acceleration *= drag;
 				}
 			}
-			if (currentSpeed <= .03f) {
+			if (currentSpeed <= .3f) {
 				currentSpeed = 0;
 				moving = false;
 			}
