@@ -31,6 +31,10 @@ public class roadGenerate : MonoBehaviour {
 			GameObject nextRoad = Instantiate(roadPrefab);
 			goalGenerate (goalPrefab, i, nextRoad, 3);
 			goalGenerate (destPrefab, i, nextRoad, 5);
+			goalGenerate (goalPrefab, i, nextRoad, 13);
+			goalGenerate (destPrefab, i, nextRoad, 15);
+			goalGenerate (goalPrefab, i, nextRoad, 23);
+			goalGenerate (destPrefab, i, nextRoad, 25);
 			//Straight
 			if (genNum == 1) {
 				goStraight = true;
@@ -38,7 +42,7 @@ public class roadGenerate : MonoBehaviour {
 				turnRight = false;
 				fixRotation(nextRoad, lastRoad);
 				nextRoad.transform.parent = lastRoad.transform;
-				nextRoad.transform.localPosition = new Vector3 (0, 0, -1.235f);
+				nextRoad.transform.localPosition = new Vector3 (0, (-i/1000f), -1.235f);
 				nextRoad.transform.parent = null;
 
 
@@ -50,7 +54,7 @@ public class roadGenerate : MonoBehaviour {
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 270f, 0f);
 				fixRotation(nextRoad, lastRoad);
 				nextRoad.transform.parent = lastRoad.transform;
-				nextRoad.transform.localPosition = new Vector3 (3.867048f, 0, -0.6110001f);
+				nextRoad.transform.localPosition = new Vector3 (3.875433f, (-i/1000f), -0.6110001f);
 				nextRoad.transform.parent = null;
 
 			} //Right
@@ -61,7 +65,7 @@ public class roadGenerate : MonoBehaviour {
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 90f, 0f);
 				fixRotation(nextRoad, lastRoad);
 				nextRoad.transform.parent = lastRoad.transform;
-				nextRoad.transform.localPosition = new Vector3 (-3.875433f, 0, -.6126667f);
+				nextRoad.transform.localPosition = new Vector3 (-3.875433f, (-i/1000f), -.6126667f);
 				nextRoad.transform.parent = null;
 
 			}
