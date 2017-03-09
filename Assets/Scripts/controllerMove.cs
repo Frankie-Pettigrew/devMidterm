@@ -111,12 +111,12 @@ public class controllerMove : MonoBehaviour {
 			//Debug.Log ("braking");
 			if (currentSpeed >= .001f) {
 				currentSpeed *= brakeForce;
-				carModel.transform.eulerAngles = new Vector3 (Mathf.LerpAngle (carModel.transform.eulerAngles.x, 10, lerpT * Time.deltaTime), carModel.transform.eulerAngles.y, carModel.transform.eulerAngles.z);
+				carModel.transform.eulerAngles = new Vector3 (carModel.transform.eulerAngles.x, carModel.transform.eulerAngles.y, Mathf.LerpAngle (carModel.transform.eulerAngles.z, -10, lerpT * Time.deltaTime));
 			} else if (moving == false) {
 				reversing = true;
 			}
 		} else {
-			carModel.transform.eulerAngles = new Vector3 (Mathf.LerpAngle (carModel.transform.eulerAngles.x, 0, lerpT * Time.deltaTime), carModel.transform.eulerAngles.y, carModel.transform.eulerAngles.z);
+			carModel.transform.eulerAngles = new Vector3 (Mathf.LerpAngle (carModel.transform.eulerAngles.x, 0, lerpT * Time.deltaTime), carModel.transform.eulerAngles.y, Mathf.LerpAngle (carModel.transform.eulerAngles.z, 0, lerpT * Time.deltaTime));
 		}
 
 		if (reversing) {
