@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class controllerMove : MonoBehaviour {
 	public static GameObject spedometer;
+	public GameObject carModel;
 	public static Text text;
 	CharacterController playerCon;
 	bool accelerating;
@@ -54,7 +55,7 @@ public class controllerMove : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			gameObject.GetComponent<AudioSource> ().Play ();
 		}
-
+			
 		//turn input into bools
 		if (vertical > 0) {
 			accelerating = true;
@@ -110,9 +111,12 @@ public class controllerMove : MonoBehaviour {
 			//Debug.Log ("braking");
 			if (currentSpeed >= .001f) {
 				currentSpeed *= brakeForce;
-			} else if(moving == false){
+				carModel.transform.eulerAngles = new Vector3 (Mathf.LerpAngle (carModel.transform.eulerAngles.x, 10, lerpT * Time.deltaTime), carModel.transform.eulerAngles.y, carModel.transform.eulerAngles.z);
+			} else if (moving == false) {
 				reversing = true;
 			}
+		} else {
+			carModel.transform.eulerAngles = new Vector3 (Mathf.LerpAngle (carModel.transform.eulerAngles.x, 0, lerpT * Time.deltaTime), carModel.transform.eulerAngles.y, carModel.transform.eulerAngles.z);
 		}
 
 		if (reversing) {
