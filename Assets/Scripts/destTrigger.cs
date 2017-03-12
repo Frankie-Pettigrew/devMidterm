@@ -11,10 +11,12 @@ public class destTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerStay(Collider other) {
-		if (siblingManager.siblings >= 1 && Input.GetKeyDown(KeyCode.Space)) {
+		
+		if (siblingManager.siblings >= 1 && Input.GetKeyDown(KeyCode.Space) && other.tag == "Player") {
 				Debug.Log("u dropped the sibling off!");
 				siblingManager.siblings--;
-				controllerMove.text.text = "You dropped off the sibling! Go to the next red cube!";
+				controllerMove.text.text = "You dropped off the sibling! Find the next one!";
+				siblingManager.dropOffs++;
 				Destroy (gameObject);
 				//SceneManager.LoadScene ("testScene");
 		}

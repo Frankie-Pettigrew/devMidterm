@@ -8,6 +8,8 @@ public class roadGenerate : MonoBehaviour {
 	public GameObject lastRoad;
 	public GameObject goalPrefab;
 	public GameObject destPrefab;
+	public Sprite stopSign;
+	SpriteRenderer stopSignRender;
 	public int roadLength;
 	bool turnRight;
 	bool turnLeft;
@@ -15,6 +17,9 @@ public class roadGenerate : MonoBehaviour {
 	bool isRight;
 	bool isLeft;
 	bool isStraight = true;
+	bool isBack;
+	int doubledRight;
+	int doubledLeft;
 	//Vector3 lastRotation = new Vector3 (0, 0, 0);
 
 
@@ -27,6 +32,8 @@ public class roadGenerate : MonoBehaviour {
 		for (int i = 0; i < roadLength; i++) {
 			//random number determines which turn to make
 			int genNum = Random.Range (0, 3);
+
+
 			//BoxCollider[] colliders = lastRoad.GetComponents<BoxCollider>()
 			GameObject nextRoad = Instantiate(roadPrefab);
 			goalGenerate (goalPrefab, i, nextRoad, 3);
@@ -35,6 +42,14 @@ public class roadGenerate : MonoBehaviour {
 			goalGenerate (destPrefab, i, nextRoad, 15);
 			goalGenerate (goalPrefab, i, nextRoad, 23);
 			goalGenerate (destPrefab, i, nextRoad, 25);
+
+			stopSignRender = nextRoad.GetComponentInChildren<SpriteRenderer> ();
+
+			if (i == 5 || i == 10 || i == 15 || i == 20 || i == 25 || i == 30) {
+				stopSignRender.sprite = stopSign;
+			} else {
+				stopSignRender.sprite = null;
+			}
 			//Straight
 			if (genNum == 1) {
 				goStraight = true;
@@ -48,25 +63,71 @@ public class roadGenerate : MonoBehaviour {
 
 			} //Left
 			else if (genNum == 2) {
-				goStraight = false;
-				turnLeft = true;
-				turnRight = false;
+				if (doubledLeft <= 1) {
+					goStraight = true;
+					turnLeft = false;
+					turnRight = false;
+					doubledLeft++;
+					fixRotation(nextRoad, lastRoad);
+					nextRoad.transform.parent = lastRoad.transform;
+					nextRoad.transform.localPosition = new Vector3 (0, (-i/1000f), -1.235f);
+					nextRoad.transform.parent = null;
+					if(doubledLeft == 3) {
+						doubledLeft = 0;
+						}
+				} else if (isLeft) {
+					goStraight = false;
+					turnLeft = true;
+					turnRight = false;
+					doubledLeft++;
+					nextRoad.transform.parent = lastRoad.transform;
+					nextRoad.transform.localPosition = new Vector3 (3.82f, (-i / 1000f), -0.6110001f);
+					nextRoad.transform.parent = null;
+
+				} else {
+					goStraight = false;
+					turnLeft = true;
+					turnRight = false;
+					nextRoad.transform.parent = lastRoad.transform;
+					nextRoad.transform.localPosition = new Vector3 (3.82f, (-i / 1000f), -0.6110001f);
+					nextRoad.transform.parent = null;
+				}
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 270f, 0f);
 				fixRotation(nextRoad, lastRoad);
-				nextRoad.transform.parent = lastRoad.transform;
-				nextRoad.transform.localPosition = new Vector3 (3.875433f, (-i/1000f), -0.6110001f);
-				nextRoad.transform.parent = null;
 
 			} //Right
 			else {
-				goStraight = false;
-				turnLeft = false;
-				turnRight = true;
+				if (doubledRight <= 1) {
+					goStraight = true;
+					turnLeft = false;
+					turnRight = false;
+					doubledRight++;
+					fixRotation(nextRoad, lastRoad);
+					nextRoad.transform.parent = lastRoad.transform;
+					nextRoad.transform.localPosition = new Vector3 (0, (-i/1000f), -1.235f);
+					nextRoad.transform.parent = null;
+					if (doubledRight == 3) {
+						doubledRight = 0;
+					}
+				} else if (isRight) {
+					goStraight = false;
+					turnLeft = false;
+					turnRight = true;
+					doubledRight++;
+					nextRoad.transform.parent = lastRoad.transform;
+					nextRoad.transform.localPosition = new Vector3 (-3.82f, (-i/1000f), -.6126667f);
+					nextRoad.transform.parent = null;
+
+				} else {
+					goStraight = false;
+					turnLeft = false;
+					turnRight = true;
+					nextRoad.transform.parent = lastRoad.transform;
+					nextRoad.transform.localPosition = new Vector3 (-3.82f, (-i/1000f), -.6126667f);
+					nextRoad.transform.parent = null;
+				}
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 90f, 0f);
 				fixRotation(nextRoad, lastRoad);
-				nextRoad.transform.parent = lastRoad.transform;
-				nextRoad.transform.localPosition = new Vector3 (-3.875433f, (-i/1000f), -.6126667f);
-				nextRoad.transform.parent = null;
 
 			}
 			//lastRotation = nextRoad.transform.localEulerAngles;
@@ -85,37 +146,45 @@ public class roadGenerate : MonoBehaviour {
 			boxColliders [1].isTrigger = false;
 			boxColliders [0].isTrigger = false; */
 			if (isLeft) {
-				nextRoad.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, 0f, 0f);
 				isStraight = true;
 				isLeft = false;
 			} else if (isRight) {
-				nextRoad.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-				isStraight = true;
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, 180f, 0f);
+				isBack = true;
 				isRight = false;
-			} else if(isStraight) {
+			} else if (isStraight) {
 				nextRoad.transform.localEulerAngles = new Vector3 (0f, 90f, 0f);
 				isStraight = false;
 				isRight = true; 
+			} else if (isBack) {
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, -90f, 0f);
+				isLeft = true;
+				isBack = false;
 			}
 		} else if (turnLeft) {
-		/*	boxColliders [2].isTrigger = false;
+			/*	boxColliders [2].isTrigger = false;
 			boxColliders [1].isTrigger = true;
 			boxColliders [0].isTrigger = false;*/
 			if (isLeft) {
-				nextRoad.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
-				isStraight = true;
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, 180f, 0f);
+				isBack = true;
 				isLeft = false;
 			} else if (isRight) {
-				nextRoad.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, 0f, 0f);
 				isStraight = true;
 				isRight = false;
 			} else if (isStraight) {
 				nextRoad.transform.localEulerAngles = new Vector3 (0f, -90f, 0f);
 				isStraight = false;
 				isLeft = true;
+			} else if (isBack) {
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, 90f, 0f);
+				isBack = false;
+				isRight = true;
 			}
 
-		} else if(goStraight) {
+		} else if (goStraight) {
 			/*boxColliders [2].isTrigger = false;
 			boxColliders [1].isTrigger = false;
 			boxColliders [0].isTrigger = true;*/
@@ -126,10 +195,13 @@ public class roadGenerate : MonoBehaviour {
 				nextRoad.transform.localEulerAngles = new Vector3 (0f, 90f, 0f);
 				isRight = true;
 			} else if (isStraight) {
-				nextRoad.transform.localEulerAngles = new Vector3(0f, 0f, 0f);
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, 0f, 0f);
 				isStraight = true;
+			} else if (isBack) {
+				nextRoad.transform.localEulerAngles = new Vector3 (0f, -180f, 0f);
+				isBack = true;
 			}
-		}
+		} 
 
 	}
 

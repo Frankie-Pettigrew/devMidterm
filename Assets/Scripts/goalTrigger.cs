@@ -6,7 +6,7 @@ public class goalTrigger : MonoBehaviour {
 
 
 	void OnTriggerStay(Collider other) {
-		if (Input.GetKeyDown (KeyCode.Space) && siblingManager.siblings == 0) {
+		if (Input.GetKeyDown (KeyCode.Space) && siblingManager.siblings == 0 && other.tag == "Player") {
 			siblingManager.siblings++;
 			Destroy (gameObject);
 			controllerMove.text.text = "drop them off at the blue cube!";

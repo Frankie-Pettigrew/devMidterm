@@ -83,6 +83,7 @@ public class controllerMove : MonoBehaviour {
 				accelerationChange = 0.1f;
 			}
 			if (currentSpeed < maxSpeed) {
+				carModel.transform.eulerAngles = new Vector3 (carModel.transform.eulerAngles.x, carModel.transform.eulerAngles.y, Mathf.LerpAngle (carModel.transform.eulerAngles.z, 10, 5 * Time.deltaTime));
 				if (acceleration < accelerationCap) {
 					acceleration += accelerationChange;
 				}
@@ -111,12 +112,12 @@ public class controllerMove : MonoBehaviour {
 			//Debug.Log ("braking");
 			if (currentSpeed >= .001f) {
 				currentSpeed *= brakeForce;
-				carModel.transform.eulerAngles = new Vector3 (carModel.transform.eulerAngles.x, carModel.transform.eulerAngles.y, Mathf.LerpAngle (carModel.transform.eulerAngles.z, -10, lerpT * Time.deltaTime));
+				carModel.transform.eulerAngles = new Vector3 (carModel.transform.eulerAngles.x, carModel.transform.eulerAngles.y, Mathf.LerpAngle (carModel.transform.eulerAngles.z, -10, 5 * Time.deltaTime));
 			} else if (moving == false) {
 				reversing = true;
 			}
 		} else {
-			carModel.transform.eulerAngles = new Vector3 (Mathf.LerpAngle (carModel.transform.eulerAngles.x, 0, lerpT * Time.deltaTime), carModel.transform.eulerAngles.y, Mathf.LerpAngle (carModel.transform.eulerAngles.z, 0, lerpT * Time.deltaTime));
+			carModel.transform.eulerAngles = new Vector3 (Mathf.LerpAngle (carModel.transform.eulerAngles.x, 0, 5 * Time.deltaTime), carModel.transform.eulerAngles.y, Mathf.LerpAngle (carModel.transform.eulerAngles.z, 0, 5 * Time.deltaTime));
 		}
 
 		if (reversing) {
