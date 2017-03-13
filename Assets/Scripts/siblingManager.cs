@@ -5,14 +5,21 @@ using UnityEngine;
 public class siblingManager : MonoBehaviour {
 	public static int siblings;
 	public static int dropOffs;
-	int rando;
+	public GameObject text1;
+	public GameObject text2;
 	void Start() {
 		siblings = 0;
 		dropOffs = 0;
-		rando = Random.Range(1, 7);
 	}
 	void Update() {
-		if (dropOffs >= rando) {
+		if (siblings < 1) {
+			text1.SetActive (true);
+			text2.SetActive (false);
+		} else {
+			text1.SetActive (false);
+			text2.SetActive (true);
+		}
+		if (dropOffs >= 5) {
 			Debug.Log ("Level Complete");
 
 		}

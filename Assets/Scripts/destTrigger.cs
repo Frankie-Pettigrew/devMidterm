@@ -4,10 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class destTrigger : MonoBehaviour {
-
+	public GameObject text1;
+	public GameObject text2;
 	void Start() {
-		controllerMove.text.text = "Pick up the sibling at the red cube!";
-
+		text1.SetActive(true);
+		text2.SetActive(false);
 	}
 
 	void OnTriggerStay(Collider other) {
@@ -15,9 +16,10 @@ public class destTrigger : MonoBehaviour {
 		if (siblingManager.siblings >= 1 && Input.GetKeyDown(KeyCode.Space) && other.tag == "Player") {
 				Debug.Log("u dropped the sibling off!");
 				siblingManager.siblings--;
-				controllerMove.text.text = "You dropped off the sibling! Find the next one!";
 				siblingManager.dropOffs++;
 				Destroy (gameObject);
+				text1.SetActive(false);
+				text2.SetActive(true);
 				//SceneManager.LoadScene ("testScene");
 		}
 

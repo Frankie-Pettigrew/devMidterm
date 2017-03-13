@@ -6,6 +6,7 @@ public class roadGenerate : MonoBehaviour {
 	public GameObject roadPrefab;
 	public GameObject roadContainer;
 	public GameObject lastRoad;
+	public GameObject treeFab;
 	public GameObject goalPrefab;
 	public GameObject destPrefab;
 	public Sprite stopSign;

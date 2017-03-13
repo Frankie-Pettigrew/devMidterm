@@ -10,7 +10,7 @@ public class introHandMove : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		transform.position = new Vector3 (0, -2, 4);
+		transform.position = new Vector3 (0, -2, 0);
 	}
 	
 	// Update is called once per frame
