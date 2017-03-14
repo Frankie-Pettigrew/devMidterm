@@ -58,7 +58,7 @@ public class roadGenerate : MonoBehaviour {
 				turnRight = false;
 				fixRotation(nextRoad, lastRoad);
 				nextRoad.transform.parent = lastRoad.transform;
-				nextRoad.transform.localPosition = new Vector3 (0, (-i/1000f), -1.235f);
+				nextRoad.transform.localPosition = new Vector3 (0, ((-1-i)/1000f), -1.235f);
 				nextRoad.transform.parent = null;
 
 
@@ -71,7 +71,7 @@ public class roadGenerate : MonoBehaviour {
 					doubledLeft++;
 					fixRotation(nextRoad, lastRoad);
 					nextRoad.transform.parent = lastRoad.transform;
-					nextRoad.transform.localPosition = new Vector3 (0, (-i/1000f), -1.235f);
+					nextRoad.transform.localPosition = new Vector3 (0, ((-1-i)/1000f), -1.235f);
 					nextRoad.transform.parent = null;
 					if(doubledLeft == 3) {
 						doubledLeft = 0;
@@ -82,7 +82,7 @@ public class roadGenerate : MonoBehaviour {
 					turnRight = false;
 					doubledLeft++;
 					nextRoad.transform.parent = lastRoad.transform;
-					nextRoad.transform.localPosition = new Vector3 (3.82f, (-i / 1000f), -0.6110001f);
+					nextRoad.transform.localPosition = new Vector3 (3.82f, ((-1-i)/ 1000f), -0.6110001f);
 					nextRoad.transform.parent = null;
 
 				} else {
@@ -90,7 +90,7 @@ public class roadGenerate : MonoBehaviour {
 					turnLeft = true;
 					turnRight = false;
 					nextRoad.transform.parent = lastRoad.transform;
-					nextRoad.transform.localPosition = new Vector3 (3.82f, (-i / 1000f), -0.6110001f);
+					nextRoad.transform.localPosition = new Vector3 (3.82f, ((-1-i)/ 1000f), -0.6110001f);
 					nextRoad.transform.parent = null;
 				}
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 270f, 0f);
@@ -116,7 +116,7 @@ public class roadGenerate : MonoBehaviour {
 					turnRight = true;
 					doubledRight++;
 					nextRoad.transform.parent = lastRoad.transform;
-					nextRoad.transform.localPosition = new Vector3 (-3.82f, (-i/1000f), -.6126667f);
+					nextRoad.transform.localPosition = new Vector3 (-3.82f, (-i/1000f),-0.6110001f);
 					nextRoad.transform.parent = null;
 
 				} else {
@@ -124,7 +124,7 @@ public class roadGenerate : MonoBehaviour {
 					turnLeft = false;
 					turnRight = true;
 					nextRoad.transform.parent = lastRoad.transform;
-					nextRoad.transform.localPosition = new Vector3 (-3.82f, (-i/1000f), -.6126667f);
+					nextRoad.transform.localPosition = new Vector3 (-3.82f, (-i/1000f), -0.6110001f);
 					nextRoad.transform.parent = null;
 				}
 				//nextRoad.transform.localEulerAngles = lastRotation + new Vector3 (0f, 90f, 0f);

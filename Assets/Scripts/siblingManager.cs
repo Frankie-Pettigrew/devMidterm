@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class siblingManager : MonoBehaviour {
 	public static int siblings;
@@ -19,9 +20,8 @@ public class siblingManager : MonoBehaviour {
 			text1.SetActive (false);
 			text2.SetActive (true);
 		}
-		if (dropOffs >= 5) {
-			Debug.Log ("Level Complete");
-
+		if (dropOffs >= 3) {
+			SceneManager.LoadScene ("titleScreen");
 		}
 	}
 }
